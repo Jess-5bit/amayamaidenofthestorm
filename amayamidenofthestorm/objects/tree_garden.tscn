@@ -1,0 +1,101 @@
+[gd_scene load_steps=13 format=3 uid="uid://dunru2dbe5r0a"]
+
+[ext_resource type="Texture2D" uid="uid://cd0ouorqobx0s" path="res://sprites/tree.png" id="1_kcwwl"]
+[ext_resource type="Script" path="res://objects/tree_garden.gd" id="1_qfhw7"]
+[ext_resource type="Shader" path="res://shaders/tree.gdshader" id="1_vcd7u"]
+[ext_resource type="Texture2D" uid="uid://ctjv43f872r41" path="res://sprites/tree_growth.png" id="2_00jj8"]
+[ext_resource type="Texture2D" uid="uid://bvo71wevb853c" path="res://sprites/garden.png" id="5_36mip"]
+[ext_resource type="Texture2D" uid="uid://dswgswvs0b4oi" path="res://sprites/treetop.png" id="6_6nyi4"]
+[ext_resource type="AudioStream" uid="uid://bsa60f3uddg3b" path="res://sounds/tree_growing.wav" id="7_3ukbv"]
+[ext_resource type="AudioStream" uid="uid://d1wxsfmj64765" path="res://sounds/tree_grown.wav" id="8_d3h4m"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mfhfd"]
+shader = ExtResource("1_vcd7u")
+shader_parameter/growth = 0.0
+shader_parameter/outline = true
+shader_parameter/growth_map = ExtResource("2_00jj8")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mw115"]
+shader = ExtResource("1_vcd7u")
+shader_parameter/growth = 0.0
+shader_parameter/outline = false
+shader_parameter/growth_map = ExtResource("2_00jj8")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f2a6m"]
+size = Vector2(64, 19)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qrm4f"]
+size = Vector2(64, 16)
+
+[node name="Tree" type="StaticBody2D"]
+collision_layer = 3
+collision_mask = 7
+script = ExtResource("1_qfhw7")
+
+[node name="Outline_L" type="Sprite2D" parent="."]
+z_index = -1
+texture_filter = 1
+material = SubResource("ShaderMaterial_mfhfd")
+position = Vector2(-1, -33)
+texture = ExtResource("1_kcwwl")
+
+[node name="Outline_R" type="Sprite2D" parent="."]
+z_index = -1
+texture_filter = 1
+material = SubResource("ShaderMaterial_mfhfd")
+position = Vector2(1, -33)
+texture = ExtResource("1_kcwwl")
+
+[node name="Outline_U" type="Sprite2D" parent="."]
+z_index = -1
+texture_filter = 1
+material = SubResource("ShaderMaterial_mfhfd")
+position = Vector2(0, -34)
+texture = ExtResource("1_kcwwl")
+
+[node name="Outline_D" type="Sprite2D" parent="."]
+z_index = -1
+texture_filter = 1
+material = SubResource("ShaderMaterial_mfhfd")
+position = Vector2(0, -32)
+texture = ExtResource("1_kcwwl")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+material = SubResource("ShaderMaterial_mw115")
+position = Vector2(0, -33)
+texture = ExtResource("1_kcwwl")
+
+[node name="Bed" type="Sprite2D" parent="."]
+z_index = -5
+texture_filter = 1
+position = Vector2(0, 3)
+texture = ExtResource("5_36mip")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 6.5)
+shape = SubResource("RectangleShape2D_f2a6m")
+
+[node name="StaticBody2D_Treetop" type="StaticBody2D" parent="."]
+visible = false
+collision_layer = 0
+collision_mask = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D_Treetop"]
+texture_filter = 1
+position = Vector2(0, -56)
+texture = ExtResource("6_6nyi4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D_Treetop"]
+position = Vector2(0, -56)
+shape = SubResource("RectangleShape2D_qrm4f")
+
+[node name="Audio_Growing" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_3ukbv")
+volume_db = -8.0
+bus = &"SFX"
+
+[node name="Audio_Grown" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_d3h4m")
+volume_db = -3.0
+bus = &"SFX"
